@@ -1,23 +1,29 @@
-# 丰羽计划课前练习
+# vue2-ts
 
-实现一个表格组件，功能：
+## Project setup
+```
+yarn install
+```
 
-- 渲染表头
-- 渲染表格主体内容
-- 分页功能(上一页，下一页，跳页（输入框输入）)
-- 排序功能(顺序/倒叙/恢复无序)
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
 
-特殊说明：
+### Compiles and minifies for production
+```
+yarn build
+```
 
-- 样式无要求，能看即可
-- 推荐使用 vue3 + tsx 结合组合式 API 完成
-  - 如果对 tsx 语法不熟悉，可以使用 vue template
-  - 如果对 vue3 语法不熟悉, 可以使用 vue2 + @vue/composition-api
-  - 如果对 vue 技术栈不熟悉，可以使用其他技术栈
+### Run your unit tests
+```
+yarn test:unit
+```
 
-其他要求：
+### Lints and fixes files
+```
+yarn lint
+```
 
-- UML 建模、API 设计，以及可运行的代码
-- 单测代码、覆盖率分析
-- 良好的代码、注释、文档等
-- 具备可扩展性设计（例如：筛选（过滤）功能）
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
