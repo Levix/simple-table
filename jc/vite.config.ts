@@ -1,15 +1,27 @@
-import { defineConfig } from "vitest/config";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
+import { defineConfig } from "vite";
+import { createVuePlugin } from 'vite-plugin-vue2';
+import ScriptSetup from 'unplugin-vue2-script-setup/vite'
 
-// https://vitejs.dev/config/
+
 export default defineConfig({
-  plugins: [vue(), vueJsx()],
-  test: {
-    globals: true,
-    environment: "jsdom",
-    transformMode: {
-      web: [/.[tj]sx$/],
-    },
+  plugins: [
+    createVuePlugin({
+      jsx: true,
+      jsxOptions: {
+        compositionAPI: true,
+        injectH: true,
+      },
+    }),
+    ScriptSetup(),
+  ],
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
   },
+  define: {
+    'process.env': {
+      NODE_ENV: `"${process.env.NODE_ENV}"`,
+      localMode: false,
+    },
+  }
 });
