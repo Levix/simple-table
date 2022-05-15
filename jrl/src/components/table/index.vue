@@ -55,14 +55,10 @@ function onSortHandle(sortToken:SortConfig,){
 </script>
 
 <template>
-  <table  width="90%"
-               border="1"
-               cellspacing="0"
-               cellpadding="4"
-               align="center">
+  <table  class="table table-bordered table-striped">
       <table-head @change-sort="onSortHandle"></table-head>
       <table-body></table-body>
-      <table-foot @change-current="currentPage=$event"></table-foot>
+      <table-foot @change-current="currentPage=$event" :total="dataList.length"></table-foot>
   </table>
 </template>
 
