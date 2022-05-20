@@ -1,11 +1,28 @@
-import { ExtractPropTypes } from "vue";
+import { ComputedRef, InjectionKey, ExtractPropTypes, PropType, Ref } from "vue";
 
-//  定义 Props
-export const tableProps = {
-  test: {
-    type: Boolean,
-    default: false,
-  },
-} as const;
+/** 列配置类型 */
+export interface TableColumn {
+  value: string | number;
+  align?: "start" | "end";
+  width?: string | number;
+  title?: string;
+  sortable?: TableColumnSortable;
+}
 
-export type TableProps = ExtractPropTypes<typeof tableProps>;
+export interface TableColumnSortable<T = any> {
+  orderBy?: String;
+  sorter?: (curr: T, next: T) => number;
+}
+
+
+export type TableProps = {
+  dataList: Array<any>;
+  columns: Array<TableColumn>;
+}
+
+export interface TableToken {
+  dataList: any[];
+  columns: TableColumn[];
+}
+
+export const TABLE_TOKEN: InjectionKey<TableToken> = Symbol("TABLE_TOKEN");
