@@ -1,0 +1,87 @@
+// Vitest Snapshot v1
+
+exports[`WuTable > 打个快照 WuTable 1`] = `
+"<table>
+  <thead class=\\"wu_head\\">
+    <tr>
+      <th title=\\"Name\\" class=\\"align__left width__200px\\">Name
+        <!---->
+      </th>
+      <th title=\\"Age\\" class=\\"align__center width__100px\\">Age<span class=\\"wu_head__sort\\">▼</span></th>
+      <th title=\\"Address\\" class=\\"align__left width__200px\\">Address
+        <!---->
+      </th>
+      <th title=\\"Tags\\" class=\\"align__left width__200px\\">Tags
+        <!---->
+      </th>
+    </tr>
+  </thead>
+  <tbody class=\\"wu_body\\">
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 9</td>
+      <td class=\\"body_align__center\\">27</td>
+      <td class=\\"body_align__left\\">London Park no. 9</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 8</td>
+      <td class=\\"body_align__center\\">26</td>
+      <td class=\\"body_align__left\\">London Park no. 8</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 7</td>
+      <td class=\\"body_align__center\\">25</td>
+      <td class=\\"body_align__left\\">London Park no. 7</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 6</td>
+      <td class=\\"body_align__center\\">24</td>
+      <td class=\\"body_align__left\\">London Park no. 6</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 5</td>
+      <td class=\\"body_align__center\\">23</td>
+      <td class=\\"body_align__left\\">London Park no. 5</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 4</td>
+      <td class=\\"body_align__center\\">22</td>
+      <td class=\\"body_align__left\\">London Park no. 4</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 3</td>
+      <td class=\\"body_align__center\\">21</td>
+      <td class=\\"body_align__left\\">London Park no. 3</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 2</td>
+      <td class=\\"body_align__center\\">20</td>
+      <td class=\\"body_align__left\\">London Park no. 2</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 1</td>
+      <td class=\\"body_align__center\\">19</td>
+      <td class=\\"body_align__left\\">London Park no. 1</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+    <tr class=\\"wu_body__tr\\">
+      <td class=\\"body_align__left\\">Edrward 0</td>
+      <td class=\\"body_align__center\\">18</td>
+      <td class=\\"body_align__left\\">London Park no. 0</td>
+      <td class=\\"body_align__left\\">nicedeveloper</td>
+    </tr>
+  </tbody>
+  <tfoot class=\\"wu_foot\\">
+    <td colspan=\\"4\\"><button class=\\"wu_foot__prev prev_disabled\\" disabled=\\"\\">前一页</button><button class=\\"actived\\">1</button><button class=\\"wu_foot__next next_disabled\\" disabled=\\"\\">后一页</button>
+      <div class=\\"wu_foot__box\\"><span>当前：第1页</span><br><span>10条 / 页</span><br><span>总共：10条</span></div>
+    </td>
+  </tfoot>
+</table>"
+`;

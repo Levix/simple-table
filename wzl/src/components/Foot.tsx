@@ -2,71 +2,102 @@
  * @file 表格底部
  */
 
-import { defineComponent, inject, ref, reactive } from "vue";
-import { TABLE_TOKEN } from "./types";
+import { defineComponent, ref, computed, PropType, toRefs } from "vue";
+import type { FootOptionType } from "./types";
 import { cloneDeep } from "lodash";
 
 export default defineComponent({
-  name: "WuFoot",
-  setup(props, { emit }) {
-    const { sortData } = inject(TABLE_TOKEN)!;
-    console.log(sortData);
+	name: "WuFoot",
+	/** 定义emit方法的参数类型 */
+	emits: {
+		changePage: (params: number) => true,
+	},
+	props: {
+		footOptions: {
+			type: Object as PropType<FootOptionType>,
+			default: () => ({}),
+		}
+	},
+	setup(props, { emit }) {
+		const { footOptions } = toRefs(props);
 
-    const gridData = reactive({
-      data: cloneDeep(sortData),
-    });
+		const _sortData = computed(() => { return footOptions.value.sortData });
+		const _pageSize = computed(() => { return footOptions.value.pageSize });
 
-    const curPage = ref(1);
-    const pageSize = ref(Math.ceil(gridData.data.length / 5));
+		const gridData = computed(() => {
+			return cloneDeep(_sortData.value);
+		});
 
-    const prev = ref(null);
-    const next = ref(null);
+		/** 当前是第几页 */
+		const curPageNumber = ref(1);
+		/** 页数按钮的个数 */
+		const pageCount = computed(() => {
+			return Math.ceil(gridData.value.length / _pageSize.value);
+		})
 
-    const getPages = () => {
-      const elList = [];
-      for (let i = 0; i < pageSize.value; i++) {
-        elList.push(<button onClick={() => changePage(i + 1)}>{i + 1}</button>);
-      }
-      return elList;
-    };
+		/** 获取每页按钮，返回一个按钮集合 */
+		const getPageButtons = () => {
+			const buttonList = [];
+			for (let i = 0; i < pageCount.value; i++) {
+				buttonList.push(
+					<button
+						class={curPageNumber.value - 1 === i ? 'actived' : ""}
+						onClick={() => toChangePage(i + 1)}
+					>
+						{i + 1}
+					</button>
+				);
+			}
+			return buttonList;
+		};
 
-    const changePage = (page: number) => {
-      if (page === 1 && pageSize.value > 1) {
-        prev.value.disabled = true;
-        next.value.disabled = false;
-      } else if (page === pageSize.value && page > 1) {
-        prev.value.disabled = false;
-        next.value.disabled = true;
-      } else {
-        prev.value.disabled = false;
-        next.value.disabled = false;
-      }
+		const prevDisabled = ref(true);
+		const nextDisabled = ref(getPageButtons().length === 1);
 
-      curPage.value = page;
-      emit("changePage", curPage.value);
-    };
+		/** 切换页 */
+		const toChangePage = (page: number) => {
+			if (page === 1 && pageCount.value > 1) {
+				prevDisabled.value = true;
+				nextDisabled.value = false;
+			} else if (page === pageCount.value && page > 1) {
+				prevDisabled.value = false;
+				nextDisabled.value = true;
+			} else {
+				prevDisabled.value = false;
+				nextDisabled.value = false;
+			}
 
-    return () => {
-      prev;
-      next;
-      return (
-        <tfoot>
-          <tr>
-            <span>{"5/page"}</span>
-            <button
-              disabled
-              ref={prev}
-              onClick={() => changePage(curPage.value - 1)}
-            >
-              前一页
-            </button>
-            {getPages()}
-            <button ref={next} onClick={() => changePage(curPage.value + 1)}>
-              后一页
-            </button>
-          </tr>
-        </tfoot>
-      );
-    };
-  },
+			curPageNumber.value = page;
+			emit("changePage", curPageNumber.value);
+		};
+
+		return () => {
+			return (
+				<tfoot class="wu_foot">
+					<td colspan={4}>
+						<button
+							class={["wu_foot__prev", prevDisabled.value ? 'prev_disabled' : '']}
+							disabled={prevDisabled.value}
+							onClick={() => toChangePage(curPageNumber.value - 1)}
+						>
+							{"前一页"}
+						</button>
+						{getPageButtons()}
+						<button
+							class={["wu_foot__next", nextDisabled.value ? 'next_disabled' : '']}
+							disabled={nextDisabled.value}
+							onClick={() => toChangePage(curPageNumber.value + 1)}
+						>
+							{"后一页"}
+						</button>
+						<div class="wu_foot__box">
+							<span>{`当前：第${curPageNumber.value}页`}</span><br />
+							<span>{`${_pageSize.value}条 / 页`}</span><br />
+							<span>{`总共：${gridData.value.length}条`}</span>
+						</div>
+					</td>
+				</tfoot >
+			);
+		};
+	},
 });
