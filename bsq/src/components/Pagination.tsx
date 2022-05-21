@@ -1,37 +1,41 @@
-import { computed, defineComponent, reactive, ref, watch, watchEffect } from "vue";
-import { type PaginationProps, paginationProps } from "./types";
-import { cloneDeep } from 'lodash';
-import './index.css'
+import { defineComponent, ref, watch } from "vue"
+import { type PaginationProps, paginationProps } from "../types/pagination"
+import usePagination from '../hooks/usePagination';
+import '/src/styles/index.css'
 
 export default defineComponent({
   name: "SimpleTable",
   props: paginationProps,
   setup(props: PaginationProps, { emit }) {
 
-    // 当前页面
-    let currentPage = ref(1)
+    const {
+      currentPage,
+      DEFAULT_MAX_PAGE,
+      pageList,
+      maxPage,
+      currentTotal,
+      borderNumber
+    } = usePagination(props)
 
-    // 跳转页码
-    let jumpPage = ref('')
-
-    // 根据显示长度计算边界值：长度5  边界为3
-    let borderNumber = computed(() => Math.ceil(props.showMaxLength / 2))
+    // 跳转输入框显示的页码
+    const jumpPage = ref('')
 
     const jumpToPage = (num: number) => {
       jumpPage.value = ''
 
       // 手动输入的跳转页码不在范围内，直接不做跳转
-      if (num < 1 || num > maxPage.value) {
+      if (num < DEFAULT_MAX_PAGE || num > maxPage.value) {
+        window.console.log(`页码输入不正常，正常范围：[0, ${maxPage.value}]`)
         return
       }
-      currentPage.value = num
+      currentPage.value = Math.floor(num)
     }
 
-    const handleKeydown = (e: Element) => {
+    const handleKeydown = (e: KeyboardEvent) => {
 
       // 处理回车跳转
       if (e.keyCode === 13) {
-        jumpToPage(Number(e.target.value));
+        jumpToPage(Number((e.target as HTMLInputElement).value));
       }
     }
 
@@ -39,64 +43,18 @@ export default defineComponent({
       currentPage.value += num
     }
 
-    // 最大页码
-    const maxPage = computed(() => Math.ceil(props.total / props.limit))
-
-    // 页码数组
-    let pageList = reactive([1])
-
-    watchEffect(() => {
-
-      // 计算出的页码 小于1 ，要么计算有误，要么接口参数返回有误
-      if (maxPage.value <= 1) {
-        return
-      }
-
-      // 最大页码  小于 连续显示最大长度：1,2,3,4,5
-      if (maxPage.value <= props.showMaxLength) {
-        let curArray = []
-        for (let i = 0; i < maxPage.value; i++) {
-          curArray.push(i + 1)
-        }
-        pageList = cloneDeep(curArray)
-        return
-      }
-
-      if (currentPage.value < borderNumber.value) {
-        let curArray = [1, 2, 3, 4, 5, maxPage.value]
-        pageList = cloneDeep(curArray)
-        return
-      }
-
-      if (currentPage.value >= (maxPage.value - 2)) {
-        let curArray = [1, maxPage.value - 4, maxPage.value - 3, maxPage.value - 2, maxPage.value - 1, maxPage.value]
-        pageList = cloneDeep(curArray)
-        return
-      }
-
-      if (currentPage.value > (1 + 2) && currentPage.value < (maxPage.value - 2)) {
-        let curArray = [1]
-        for (let i = currentPage.value - 2; i < currentPage.value + 2; i++) {
-          curArray.push(i)
-        }
-        curArray.push(maxPage.value)
-        pageList = cloneDeep(curArray)
-      }
-
-    })
-
     watch(currentPage, () => {
-      emit('update-cur-page', currentPage.value)
-    }, {
-      immediate: true
+      emit('update-cur-page', Number(currentPage.value))
     })
 
     return () => (
       <div class='pagination-wrap'>
-        <span>当前第{currentPage.value}页</span>
+        <span class="pagination-wrap-total">共{currentTotal.value}条</span>
+
+        <span class="pagination-current-page">当前第{currentPage.value}页</span>
 
         {
-          currentPage.value > 1 &&
+          currentPage.value > DEFAULT_MAX_PAGE &&
           <span
             class='pagination-wrap-btn'
             onClick={() => pageAdd(-1)}
@@ -106,12 +64,12 @@ export default defineComponent({
         }
 
         {
-          pageList.map(page => (
+          pageList.data.map(page => (
             <span
               key={page}
               class={
                 `pagination-wrap-context 
-                  page-${(currentPage.value - borderNumber.value > 1 && page === 1) ? 'after' : ''} 
+                  page-${(currentPage.value - borderNumber.value > DEFAULT_MAX_PAGE && page === DEFAULT_MAX_PAGE) ? 'after' : ''} 
                   page-${(currentPage.value + borderNumber.value <= maxPage.value && page === maxPage.value) ? 'before' : ''} 
                   ${page === currentPage.value && 'current'}`
               }
@@ -137,7 +95,7 @@ export default defineComponent({
             type="number"
             class='input'
             value={jumpPage.value}
-            onBlur={e => jumpToPage(Number(e.target.value))}
+            onBlur={e => jumpToPage(Number((e.target as HTMLInputElement).value))}
             onKeydown={e => handleKeydown(e)}
           />
           <span>页</span>

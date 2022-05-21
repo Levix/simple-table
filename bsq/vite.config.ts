@@ -6,6 +6,9 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 export default defineConfig({
   plugins: [vue(), vueJsx()],
   test: {
+    coverage: {
+      enabled: true
+    },
     globals: true,
     environment: "jsdom",
     transformMode: {
