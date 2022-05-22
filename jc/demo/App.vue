@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import SimpleTable from "./components/simple_table.vue";
+import SimpleTable from "../src/components/simple_table.vue";
 
 export default {
     components: {

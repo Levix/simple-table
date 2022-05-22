@@ -13,10 +13,10 @@
                          class="table-header__sortable-wrap">
                         <span :class="['table-header__arrow', {'active': sort === 'ASC'}]"
                               @click="sortData('ASC', column.dataIndex)"
-                              :utid="column.dataIndex + '-asc'">∧</span>
+                              :utid="column.dataIndex + '-asc'">▲</span>
                         <span :class="['table-header__arrow', {'active': sort === 'DESC'}]"
                               @click="sortData('DESC', column.dataIndex)"
-                              :utid="column.dataIndex + '-desc'">∨</span>
+                              :utid="column.dataIndex + '-desc'">▼</span>
                     </div>
                 </div>
             </th>
@@ -24,21 +24,22 @@
     </thead>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * @file 表格头部文件
  */
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, PropType } from '@vue/composition-api';
+import { TableColumn } from '../types/index';
 
 export default defineComponent({
     props: {
         columns: {
-            type: Array,
+            type: Array as PropType<TableColumn[]>,
             required: true
         },
 
         sort: {
-            type: String,
+            type: String as PropType<string>,
             default: ''
         },
 

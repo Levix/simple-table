@@ -2,8 +2,6 @@
     <tbody>
         <tr v-for="(item, index) in tableData"
             :utid="'table-cloumn-' + index"
-            @click="clickRow(item)"
-            @mouseenter="hoverRow(item)"
             :key="index">
             <td v-for="(column, index) in columns"
                 :key="index"
@@ -14,41 +12,28 @@
      </tbody>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * @file 表格body文件
  */
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, PropType } from '@vue/composition-api'
+import { TableColumn } from '../types/index';
 
 export default defineComponent({
     props: {
         /**
          * 表格列
          */
-         columns: {
-          type: Array,
-          required: true
+        columns: {
+            type: Array as PropType<TableColumn[]>,
+            required: true
         },
 
         /**
          * 表格数据
          */
-         tableData: {
-          type: Array
-        },
-
-        /**
-         * hover事件
-         */
-        hoverRow: {
-            type: Function
-        },
-
-        /**
-         * click事件
-         */
-        clickRow: {
-            type: Function
+        tableData: {
+            type: Array as PropType<Object[]>
         }
     }
 })

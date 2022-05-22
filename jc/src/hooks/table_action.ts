@@ -38,7 +38,7 @@ export function useSortData (pageOptions: PageOptions) {
     let sortedData = ref(cloneDeep(tableData));
 
     // 当前页展示的数据
-    let shownData = computed(() => {
+    let showData = computed(() => {
 
         // 如果不需要分页，则一次性展示所有数据
         if (!showPagination) {
@@ -76,5 +76,5 @@ export function useSortData (pageOptions: PageOptions) {
             ? sortBy(sortedData.value, dataIndex)
             : sortBy(sortedData.value, dataIndex).reverse();
     }
-    return { shownData };
+    return { showData };
 }
