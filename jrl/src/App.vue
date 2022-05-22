@@ -23,6 +23,7 @@ const column =ref([
     id:2,
     key: "address",
     title:"地址",
+    sortable:true,
   },
   {
     id:3,

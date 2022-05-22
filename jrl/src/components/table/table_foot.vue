@@ -1,60 +1,57 @@
-<script  lang="ts" setup>
-import { computed, ref,  watch, PropType } from "vue";
-import {   PAGE_SIZE } from "./const"
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { usePageination } from './hooks/pageination'
+import { defineEmits } from 'vue'
 
-let tableProps =defineProps({
-    total:{
-        type: Number as PropType<number>,
-        default: 0
-    }
+let tableProps = defineProps({
+  total: {
+    type: Number,
+    default: 0,
+  },
+  currentPage: {
+    type: Number,
+    required: true,
+  },
+  limitPage: {
+    type: Number,
+    required: true,
+  },
 })
-const $footEmit=defineEmits(['change-current']);
 
-let currentPage = ref(1)
-
+let changeCurrentPageEmit = defineEmits(['update:currentPage'])
 
 /**一共有多少页 */
-let pageCount=computed(()=>{
-    return Math.ceil(tableProps.total /  PAGE_SIZE)
+let pageCount = computed(() => {
+  return Math.ceil(tableProps.total / tableProps.limitPage)
 })
 
-
-function prePageHandle(){
-    if (currentPage.value<=1) {
-        return
-    }
-    currentPage.value--;
-}
-function nextPageHandle(){
-    if (currentPage.value>=pageCount.value) {
-        return
-    }
-    currentPage.value++;
-}
-function currentPageHandle(e:any){
-    currentPage.value= e?.target.value 
-}
-watch(currentPage,()=>{
-    $footEmit('change-current',currentPage.value - 1)
+/** 当前页 */
+let currentPage = computed({
+  get() {
+    return tableProps.currentPage + 1
+  },
+  set(val: number) {
+    changeCurrentPageEmit('update:currentPage', val - 1)
+  },
 })
+
+let { prePageHandle, nextPageHandle } = usePageination(currentPage,pageCount)
+
 </script>
 
 <template>
-    <tfoot>
-          <tr>
-            <span>总页数：{{pageCount}}</span>
-            <span>当前页: {{currentPage}}</span>
-            <button @click="prePageHandle">
-              前一页
-            </button>
-            <input type="number" 
-                        :max="pageCount"
-                        :min="1"
-                        :value="currentPage"
-                        @change="currentPageHandle">
-            <button  @click="nextPageHandle">
-              后一页
-            </button>
-          </tr>
-        </tfoot>
+  <tfoot>
+    <tr>
+      <span>总页数：{{ pageCount }}</span>
+      <span>当前页: {{ currentPage }}</span>
+      <button @click="prePageHandle()">前一页</button>
+      <input
+        type="number"
+        :max="pageCount"
+        :min="1"
+        v-model.number="currentPage"
+      />
+      <button @click="nextPageHandle()">后一页</button>
+    </tr>
+  </tfoot>
 </template>
