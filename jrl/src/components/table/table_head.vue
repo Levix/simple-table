@@ -1,57 +1,51 @@
-<script  lang="ts" setup>
-import { ref ,defineEmits,inject,computed} from "vue";
-import {GLOBAL_TABLE_TOKEN,
-             STATUS_TOKEN} from "./const"
-import { SortKeyType } from "../types"
+<script lang="ts" setup>
+import { inject,  ref } from 'vue'
+import { GLOBAL_TABLE_TOKEN } from './const'
+import TableSort from './table_sort.vue'
+import  TableSortType from './table_sort.vue'
+import { SortConfig } from '../types'
 
-    const { tableColumnsConfig } = inject(GLOBAL_TABLE_TOKEN)!;
+const { tableColumnsConfig } = inject(GLOBAL_TABLE_TOKEN)!
 
-    const $headEmit=defineEmits(['change-sort']);
-    const status = ref<SortKeyType>(STATUS_TOKEN.normal);
-    /**点击排序改变排序状态 */
-    const headSortHandle = (columnProp:string ) => {
-      switch (status.value) {
-        case STATUS_TOKEN.normal:
-          status.value = STATUS_TOKEN.ascend;
-          break;
-        case STATUS_TOKEN.ascend:
-          status.value = STATUS_TOKEN.descend;
-          break;
-        case STATUS_TOKEN.descend:
-          status.value = STATUS_TOKEN.normal;
-          break;
-      }
-     $headEmit("change-sort", {
-       status:status.value,
-       columnProp
-     });
-    }
+/**处理点击排序事件 start */
 
-    const statusText = {
-        [STATUS_TOKEN.normal]:"正常",
-        [STATUS_TOKEN.ascend]:"升序",
-        [STATUS_TOKEN.descend]:"降序"
-    }
-    /** 根据相应状态显示对应文字 */
-    const showStatusText = computed(() => {
-      return statusText[status.value]
-    });
+let changeSortEmit = defineEmits(['change-sort'])
+const setTableSortRefs = ref(new Map())
+const tableSortRefs = (tableSortRef:InstanceType<typeof TableSortType>) => {
+  setTableSortRefs.value.set(tableSortRef.columnProp, tableSortRef)
+}
+let prevColumnProp = ref('')
+
+/**
+ * 处理点击排序事件
+ *@param sortParams 排序配置参数
+ */
+const changeSortHandle = (sortParams: SortConfig) => {
+  // 不是第一次点击 且点击的不是同一列就将上一列恢复为正常
+  if (prevColumnProp.value && prevColumnProp.value !== sortParams.columnProp) {
+    setTableSortRefs.value.get(prevColumnProp.value).resetSortStatus()
+  }
+  prevColumnProp.value = sortParams.columnProp
+    // 点击排序发送排序事件
+  changeSortEmit('change-sort', sortParams)
+}
+/**处理点击排序事件 end */
 </script>
-
 <template>
-   <thead>
-          <tr>
-              <!-- 表列渲染 -->
-             <th v-for=" item  in tableColumnsConfig" 
-                    :key="item.id">
-                <!-- 表格标题 -->
-                {{item.title}}
-                <!-- 是否支持排序 -->
-                <a href="javascript:;" v-if="item.sortable"
-                                                  @click="headSortHandle(item.key)" >
-                    {{showStatusText}}
-                </a>
-             </th>
-          </tr>
-        </thead>
+  <thead>
+    <tr>
+      <!-- 表列渲染 -->
+      <th v-for="item in tableColumnsConfig" :key="item.id">
+        <!-- 表格标题 -->
+        {{ item.title }}
+        <!-- 是否支持排序 -->
+        <table-sort
+          v-if="item.sortable"
+          :column-prop="item.key"
+          @change-sort="changeSortHandle"
+          :ref="tableSortRefs"
+        ></table-sort>
+      </th>
+    </tr>
+  </thead>
 </template>
