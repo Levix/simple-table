@@ -1,40 +1,34 @@
-import { SortConfig, SortKeyType } from "../../types"
-import {  STATUS_TOKEN } from '../const'
-import {
-    cloneDeep,
-    sortBy,
-    reverse
-} from 'lodash'
+import { cloneDeep, sortBy } from 'lodash'
+
+import { useInjector } from '../store'
+import { tableDataList } from '../store/table'
+
+let { displayTableList, setDisplayTableList, tableData } = useInjector<any>(tableDataList, 'root')
 
 /**
  * 排序处理方法
- * @param { "normal" | "ascend" | "descend" } sortConfig 排序规则
- * @param { Array } tableData  表格数据
- * @returns 
+ * @param  columnProp 跟据那个属性排序规则
+ * @returns
  */
-export function useSortHandle(sortConfig: SortConfig, tableData: any[]) {
+export function useSortHandle(columnProp: string) {
+	function normalSortHandle() {
+		let sortList = cloneDeep(tableData.list)
+		setDisplayTableList(sortList)
+	}
 
-    function normalSortHandle() {
-        let sortList = cloneDeep(tableData)
-        return sortList
-    }
+	function descendSortHandle() {
+		let sortList = sortBy(displayTableList.list, columnProp).reverse()
+		setDisplayTableList(sortList)
+	}
 
-    function descendSortHandle() {
-        let sortList = sortBy(tableData, sortConfig.columnProp)
-        return reverse(sortList)
-    }
+	function ascendSortHandle() {
+		let sortList = sortBy(displayTableList.list, columnProp)
+		setDisplayTableList(sortList)
+	}
 
-    function ascendSortHandle() {
-        return sortBy(tableData, sortConfig.columnProp)
-    }
-    let sortMethodMap =  {
-        [STATUS_TOKEN.ascend]:ascendSortHandle,
-        [STATUS_TOKEN.descend]:descendSortHandle,
-        [STATUS_TOKEN.normal]:normalSortHandle
-    }
-    
-    return sortMethodMap[sortConfig.status]
+	return {
+		ascendSortHandle,
+		descendSortHandle,
+		normalSortHandle
+	}
 }
-
-
-

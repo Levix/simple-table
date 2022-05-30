@@ -1,18 +1,22 @@
-<script  lang="ts" setup>
-import { inject, ref, toRef, watch } from "vue";
-import { GLOBAL_TABLE_TOKEN } from "./const"
+<script lang="ts" setup>
+import { extend } from 'lodash'
+import { inject, ref, toRef, watch, InjectionKey } from 'vue'
+import { TableToken } from '../types'
+import { GLOBAL_TABLE_TOKEN } from './const'
+import { useInjector } from './store'
+import { tableDataList } from './store/table'
 
-let { tableColumnsConfig, tableData } = inject(GLOBAL_TABLE_TOKEN)!;
+let { displayTableList, tableColumnsConfig } = useInjector<any>(tableDataList)
 </script>
 
 <template>
-    <tbody>
-        <!-- 渲染所有表格行 -->
-        <tr v-for="(bodyiIem) in tableData">
-            <!-- 渲染表某一行中所有列 -->
-            <td v-for="(colItem) in tableColumnsConfig">
-                {{ bodyiIem[colItem.key] }}
-            </td>
-        </tr>
-    </tbody>
+	<tbody>
+		<!-- 渲染所有表格行 -->
+		<tr v-for="bodyItem in displayTableList.list">
+			<!-- 渲染表某一行中所有列 -->
+			<td v-for="colItem in tableColumnsConfig.list">
+				{{ bodyItem[colItem.key] }}
+			</td>
+		</tr>
+	</tbody>
 </template>

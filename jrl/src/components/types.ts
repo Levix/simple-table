@@ -1,33 +1,30 @@
-import { ExtractPropTypes,ComputedRef } from "vue";
-import { STATUS_TOKEN } from "./table/const"
+import { ExtractPropTypes, ComputedRef, Ref } from 'vue'
+import { STATUS_TOKEN } from './table/const'
 
 /** 列配置类型 */
 export interface TableColumn {
+	id: number
 
-  id: number;
+	key: string
 
-  key: string;
+	title: string
 
-  title: string;
-
-  sortable?:  boolean;
+	sortable?: boolean
 }
 
 /** 排序的3中规则 */
-export type  SortKeyType =STATUS_TOKEN;
+export type SortKeyType = STATUS_TOKEN
 
-export type  SortConfig = {
-  status:SortKeyType,
-  columnProp:string;
+export type SortConfig = {
+	status: SortKeyType
+	columnProp: string
 }
-
 
 /** 表格注入全局数据类型 */
 export interface TableToken {
+	tableData: Ref<any[]>
 
-  tableData: ComputedRef<any[]>;
+	tableColumnsConfig: Ref<TableColumn[]>
 
-  tableColumnsConfig: TableColumn[];
+	[key: string]: any
 }
-
-
