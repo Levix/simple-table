@@ -1,0 +1,17 @@
+// Vitest Snapshot v1
+
+exports[`WuFoot > 打个快照 WuFoot 1`] = `
+"<tfoot class=\\"wu_foot\\">
+  <td colspan=\\"4\\"><button class=\\"wu_foot__prev prev_disabled\\" disabled=\\"\\">前一页</button><button class=\\"actived\\">1</button><button class=\\"\\">2</button><button class=\\"\\">3</button><button class=\\"wu_foot__next\\">后一页</button>
+    <div class=\\"wu_foot__box\\"><span>当前：第1页</span><br><span>4条 / 页</span><br><span>总共：10条</span></div>
+  </td>
+</tfoot>"
+`;
+
+exports[`WuFoot > 组件是否正常渲染，参数是否正确 1`] = `
+"<tfoot class=\\"wu_foot\\">
+  <td colspan=\\"4\\"><button class=\\"wu_foot__prev prev_disabled\\" disabled=\\"\\">前一页</button><button class=\\"actived\\">1</button><button class=\\"\\">2</button><button class=\\"wu_foot__next\\">后一页</button>
+    <div class=\\"wu_foot__box\\"><span>当前：第1页</span><br><span>8条 / 页</span><br><span>总共：10条</span></div>
+  </td>
+</tfoot>"
+`;
