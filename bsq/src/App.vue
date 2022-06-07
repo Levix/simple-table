@@ -1,79 +1,104 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { reactive } from '@vue/reactivity'
+import { getTableApi } from './api/table'
+import { onBeforeMount, watch } from '@vue/runtime-core'
+import type { AllParamsType, TableOptionType } from './types/app'
+import useTableSearch from './hooks/useTableSearch'
 import SimpleTable from './components/SimpleTable'
 
-const tableOption = reactive({
+// 下发参数集
+const { allParams, onSearch, handleSort, updateCurPage } = useTableSearch()
 
-  // 排序是否是支持多个
+// table 展示列配置
+const COLUMNS = [
+  {
+    title: 'ID',
+    dataKey: 'id',
+    sortable: true
+  },
+  {
+    title: '姓名',
+    dataKey: 'name'
+  },
+  {
+    title: '年龄',
+    dataKey: 'age',
+    sortable: true
+  },
+  {
+    title: '爱好',
+    dataKey: 'hobby'
+  }
+]
+
+// table option配置
+let tableOption = reactive({
+  /**
+   * 排序是否是支持多个: 默认值 false
+   * 1 false: 单个字段进行排序
+   * 2 true: 多个字段进行排序（这种场景很特殊）
+   */
   // isMultiSort: true,
 
-  // 是否是本地排序：当前界面排序，非接口排序
-  isLocalSort: true,
+  /**
+   * 是否是本地排序: 默认值 false
+   *  1 true: 当前界面排序，非接口排序
+   *  2 fasle: 接口排序，数据库排序
+   */
+  // isLocalSort: true,
 
   // 列配置
-  columns: [
-    {
-      title: 'ID',
-      dataKey: 'id',
-      sortable: true
-    },
-    {
-      title: '姓名',
-      dataKey: 'name'
-    },
-    {
-      title: '年龄',
-      dataKey: 'age',
-      sortable: true
-    },
-    {
-      title: '爱好',
-      dataKey: 'hobby'
-    }
-  ],
+  columns: COLUMNS,
 
   // 数据源
-  data: [
-    {
-      id: '1111',
-      name: '张三',
-      age: '18',
-      hobby: '打篮球'
-    },
-    {
-      id: '3333',
-      name: '王五',
-      age: '26',
-      hobby: '打羽毛球'
-    },
-    {
-      id: '2222',
-      name: '李四',
-      age: '20',
-      hobby: '踢足球'
-    }
-  ]
+  data: [],
+
+  // 分页的配置
+  paginationConfig: {}
+} as TableOptionType)
+
+// 数据请求
+const initData = async (params: AllParamsType) => {
+  let res = await getTableApi(params)
+  if (res.code !== 200) {
+    // 控制台抛出接口异常msg
+    window.console.error(res.msg)
+    return
+  }
+  let { data, total, limit } = res
+  tableOption.data = data
+  tableOption.paginationConfig = {
+    total,
+    limit
+  }
+}
+
+watch(allParams, () => {
+  initData(allParams.value)
 })
 
-const hanleSort = sortParams => {
-
-  // 这里处理远程排序参数下发请求
-  window.console.log('sortParams: ', sortParams)
+// 处理刷新
+const onRefresh = () => {
+  window.console.log('点击刷新按钮，重新请求数据')
+  initData(allParams.value)
 }
 
-const updateCurPage = curPage => {
-
-  // 这里处理远程当前页参数下发请求
-  window.console.log('curPage: ', curPage)
-}
+// 模拟异步请求
+onBeforeMount(() => {
+  initData(allParams.value)
+})
 </script>
 
 <template>
-  <simple-table :option="tableOption" 
-                @hanle-sort="hanleSort"
-                @update-cur-page="updateCurPage" />
+  <simple-table
+    :option="tableOption"
+    @handle-sort="handleSort"
+    @update-cur-page="updateCurPage"
+    @on-refresh="onRefresh"
+    @on-search="onSearch"
+  >
+    <div>我是操作栏左侧自定插槽内容</div>
+  </simple-table>
 </template>
 
 <style>
