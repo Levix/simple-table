@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { expect, test, it } from 'vitest'
-import JTable from '../src/components/table/index.vue'
 
-import { useSortHandle } from '../src/components/table/hooks/use_sort'
-const { normalSortHandle, descendSortHandle, ascendSortHandle } = useSortHandle('date')
+import JTable from '../src/components/table/index.vue'
+import TablePageination from '../src/components/table/table_pageination.vue'
 
 const dataList = [
 	{
@@ -101,16 +100,45 @@ const columnProp = [
 		sortable: true
 	}
 ]
-test('mount component', () => {
+
+/** 分页 */
+test('click pagination', async () => {
 	const jTable = mount(JTable, {
 		props: {
-			columnProp: dataList,
+			dataList: dataList,
 			tableColumn: columnProp
 		}
 	})
-	it('组件是否正常渲染，参数是否正确', () => {
-		expect(jTable.find('tbody').exists()).toBe(true)
+	const jTableFoot = mount(TablePageination, {
+		props: {
+			total: 15,
+			currentPage: 1,
+			limitPage: 4
+		}
+	})
+	const eleInput = jTableFoot.find('input')
+	const nextButton = jTableFoot.find('button.next')
+	const preButton = jTableFoot.find('button.pre')
 
-		expect(jTable.findAll('tr')).toHaveLength(columnProp.length)
+	it('正常测试:点击上一页下一页跳页', async () => {
+		await eleInput.setValue(3)
+		await preButton.trigger('click')
+		expect(eleInput.text()).contains(2)
+		await nextButton.trigger('click')
+		expect(eleInput.text()).contains(3)
+	})
+
+	it('异常测试:点击上一页下一页跳页', async () => {
+		await eleInput.setValue(1)
+		await eleInput.setValue(-1)
+		expect(eleInput.text()).contains(1)
+
+		await preButton.trigger('click')
+		expect(eleInput.text()).contains(1)
+		await eleInput.setValue(1)
+		await eleInput.setValue(6)
+
+		await nextButton.trigger('click')
+		expect(eleInput.text()).contains(1)
 	})
 })

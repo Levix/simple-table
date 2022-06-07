@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { usePageination } from './hooks/pageination'
+import { usePageination } from './hooks/use_pageination'
 import { defineEmits } from 'vue'
 
-let changeCurrentPageEmit = defineEmits(['update:currentPage'])
+let changeCurrentPageEmit = defineEmits([
+	'update:currentPage'
+])
 let tableProps = defineProps({
 	total: {
 		type: Number,

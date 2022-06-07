@@ -3,13 +3,13 @@ import { ref } from 'vue'
 import TableSort from './table_sort.vue'
 import { SortConfig } from '../types'
 import { useInjector } from './store'
-import { tableDataList } from './store/table'
+import { tableDataList } from './store/table_store'
 
 let { tableColumnsConfig } = useInjector<any>(tableDataList)
 
 const setTableSortRefs = ref(new Map())
 /** todo 获取vue实例的类型 */
-const tableSortRefs = (tableSortRef: InstanceType<any>) => {
+const tableSortRefs = (tableSortRef: InstanceType<typeof TableSort>) => {
 	setTableSortRefs.value.set(tableSortRef.columnProp, tableSortRef)
 }
 let prevColumnProp = ref('')

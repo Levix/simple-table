@@ -5,7 +5,7 @@
 import { onMounted, reactive, ref, watch } from '@vue/runtime-dom'
 import { getList } from './api/index'
 import JTable from './components/table/index.vue'
-import TableFoot from './components/table/table_foot.vue'
+import TablePageination from './components/table/table_pageination.vue'
 
 type TableDataType = {
 	date: string
@@ -52,11 +52,11 @@ watch(tablePage, async () => {
 <template>
 	<j-table :data-list="tableData" :table-column="column">
 		<template #pageination>
-			<table-foot
+			<table-Pageination
 				v-model:currentPage="tablePage.currentPage"
 				:total="15"
 				:limit-page="tablePage.limit"
-			></table-foot>
+			></table-Pageination>
 		</template>
 	</j-table>
 </template>

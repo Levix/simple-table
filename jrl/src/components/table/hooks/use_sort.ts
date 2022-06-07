@@ -1,7 +1,7 @@
 import { cloneDeep, sortBy } from 'lodash'
 
 import { useInjector } from '../store'
-import { tableDataList } from '../store/table'
+import { tableDataList } from '../store/table_store'
 
 let { displayTableList, setDisplayTableList, tableData } = useInjector<any>(tableDataList, 'root')
 

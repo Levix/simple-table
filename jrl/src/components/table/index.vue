@@ -5,7 +5,7 @@ import TableHead from './table_head.vue'
 import TableBody from './table_body.vue'
 
 import { useProvider } from './store/index'
-import { tableDataList } from './store/table'
+import { tableDataList } from './store/table_store'
 
 /**所有表格数据 */
 let tableProps = defineProps({

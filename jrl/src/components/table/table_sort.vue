@@ -3,8 +3,8 @@ import { computed, ref, watch } from 'vue'
 import { STATUS_TOKEN } from './const'
 import { SortKeyType } from '../types'
 import { useInjector } from './store'
-import { tableDataList } from './store/table'
-import { useSortHandle } from './hooks/sort'
+import { tableDataList } from './store/table_store'
+import { useSortHandle } from './hooks/use_sort'
 
 let { tableData } = useInjector<any>(tableDataList)
 let headProps = defineProps({
