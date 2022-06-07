@@ -1,0 +1,66 @@
+// Vitest Snapshot v1
+
+exports[`WuBody > 打个快照 WuBody 1`] = `
+"<tbody class=\\"wu_body\\">
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 9</td>
+    <td class=\\"body_align__center\\">27</td>
+    <td class=\\"body_align__left\\">London Park no. 9</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 8</td>
+    <td class=\\"body_align__center\\">26</td>
+    <td class=\\"body_align__left\\">London Park no. 8</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 7</td>
+    <td class=\\"body_align__center\\">25</td>
+    <td class=\\"body_align__left\\">London Park no. 7</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 6</td>
+    <td class=\\"body_align__center\\">24</td>
+    <td class=\\"body_align__left\\">London Park no. 6</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 5</td>
+    <td class=\\"body_align__center\\">23</td>
+    <td class=\\"body_align__left\\">London Park no. 5</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 4</td>
+    <td class=\\"body_align__center\\">22</td>
+    <td class=\\"body_align__left\\">London Park no. 4</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 3</td>
+    <td class=\\"body_align__center\\">21</td>
+    <td class=\\"body_align__left\\">London Park no. 3</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 2</td>
+    <td class=\\"body_align__center\\">20</td>
+    <td class=\\"body_align__left\\">London Park no. 2</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 1</td>
+    <td class=\\"body_align__center\\">19</td>
+    <td class=\\"body_align__left\\">London Park no. 1</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+  <tr class=\\"wu_body__tr\\">
+    <td class=\\"body_align__left\\">Edrward 0</td>
+    <td class=\\"body_align__center\\">18</td>
+    <td class=\\"body_align__left\\">London Park no. 0</td>
+    <td class=\\"body_align__left\\">nicedeveloper</td>
+  </tr>
+</tbody>"
+`;

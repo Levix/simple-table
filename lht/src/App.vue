@@ -1,20 +1,82 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import SimpleTable from "./components/SimpleTable";
+import LhtTable from "./components/LhtTable";
+import { TableColumn } from "./components/types";
+const columns: TableColumn[] = [
+  {
+    title: "Name",
+    value: "name",
+  },
+  {
+    title: "Age",
+    value: "age",
+    sortable: {}
+  },
+  {
+    title: "Sex",
+    value: "sex",
+  }
+];
+const tableData = [
+  {
+    name: "tom",
+    age: 21,
+    sex: 'man'
+  },
+  {
+    name: "liy",
+    age: 18,
+    sex: 'woman'
+  },
+  {
+    name: "tim",
+    age: 19,
+    sex: 'man'
+  },
+  {
+    name: "mike",
+    age: 23,
+    sex: 'man'
+  },
+  {
+    name: "matix",
+    age: 20,
+    sex: 'man'
+  },
+  {
+    name: "kety",
+    age: 25,
+    sex: 'woman'
+  },
+  {
+    name: "sandy",
+    age: 22,
+    sex: 'woman'
+  },
+  {
+    name: "love",
+    age: 24,
+    sex: 'man',
+    ser: 'lwq'
+  },
+];
 </script>
 
 <template>
-  <SimpleTable />
+  <LhtTable class="lht_table_class"
+            :dataList="tableData" 
+            :columns="columns" />
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 60px;
+.lht_table_class {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 24px;
+  /*合并边框模型*/
+  border-collapse: collapse;
+  border-spacing: 0;
+  /*在空单元格周围绘制边框*/
+  empty-cells: show;
+  border: 1px solid #e9e9e9;
 }
 </style>

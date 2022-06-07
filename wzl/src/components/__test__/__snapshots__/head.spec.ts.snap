@@ -1,0 +1,35 @@
+// Vitest Snapshot v1
+
+exports[`WuHead > 打个快照 WuHead 1`] = `
+"<thead class=\\"wu_head\\">
+  <tr>
+    <th title=\\"Name\\" class=\\"align__left width__200px\\">Name
+      <!---->
+    </th>
+    <th title=\\"Age\\" class=\\"align__center width__100px\\">Age<span class=\\"wu_head__sort\\">▼</span></th>
+    <th title=\\"Address\\" class=\\"align__left width__200px\\">Address
+      <!---->
+    </th>
+    <th title=\\"Tags\\" class=\\"align__left width__200px\\">Tags
+      <!---->
+    </th>
+  </tr>
+</thead>"
+`;
+
+exports[`WuHead > 组件是否正常渲染，参数是否正确 1`] = `
+"<thead class=\\"wu_head\\">
+  <tr>
+    <th title=\\"Col_1\\" class=\\"\\">Col_1
+      <!---->
+    </th>
+    <th title=\\"Col_2\\" class=\\"\\">Col_2<span class=\\"wu_head__sort\\">▲</span></th>
+    <th title=\\"Col_3\\" class=\\"\\">Col_3
+      <!---->
+    </th>
+    <th title=\\"Col_4\\" class=\\"\\">Col_4
+      <!---->
+    </th>
+  </tr>
+</thead>"
+`;

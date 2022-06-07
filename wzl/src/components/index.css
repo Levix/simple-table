@@ -1,0 +1,98 @@
+table {
+    width: 100%;
+    min-height: 240px;
+    max-height: 400px;
+    margin-bottom: 24px;
+    /*合并边框模型*/
+    border-collapse: collapse;
+    border-spacing: 0;
+    /*在空单元格周围绘制边框*/
+    empty-cells: show;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+tr {
+    height: 30px;
+}
+
+table,
+thead,
+th,
+td {
+    border: 1px solid salmon;
+}
+
+.wu_head .width__200px {
+    width: 200px;
+}
+
+.wu_head .width__100px {
+    width: 100px;
+}
+
+.wu_head .align__left {
+    text-align: left;
+}
+
+.wu_head .align__right {
+    text-align: right;
+}
+
+.wu_head .align__center {
+    text-align: center;
+}
+
+.wu_body {
+    height: 300px;
+}
+
+.wu_body .body_align__left {
+    text-align: left;
+}
+
+.wu_body .body_align__right {
+    text-align: right;
+}
+
+.wu_body .body_align__center {
+    text-align: center;
+}
+
+.wu_body__tr {
+    max-height: 30px;
+}
+
+.wu_body td {
+    height: 30px !important;
+}
+
+.actived {
+    background-color: red;
+    color: white;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+.wu_head__sort {
+    cursor: pointer;
+    color: yellowgreen;
+    font-size: 20px;
+}
+
+.empty_wrap {
+    font-size: 24px;
+    text-align: center;
+    position: absolute;
+    width: calc(100% - 18px);
+    height: 300px;
+    line-height: 300px;
+    color: ghostwhite;
+    background-color: grey;
+}
