@@ -8,43 +8,41 @@
                       :style="{ width: item.defaultWidth }"></colgroup>
             <table-header :sort="sort"
                           v-if="needHeader"
-                          :sortData="sortData"
+                          :sort-data="sortData"
                           v-bind="$attrs"
                           :columns="columns"></table-header>
-            <table-body :clickRow="clickRow"
-                        :hoverRow="hoverRow"
-                        :tableData="shownData"
+            <table-body :table-data="showData"
                         :columns="columns">
                 <div slot-scope="{column, record}">
                     <slot :name="column.dataIndex"
                           :record="record">
-                        {{ record[column.dataIndex] }}
+                        {{ record[column.dataIndex] | empty }}
                     </slot>
                 </div>
             </table-body>
         </table>
-        <pagination :activeNum="activeNum"
-                    :onPrevClick="onPrevClick"
-                    :onNextClick="onNextClick"
+        <pagination v-if="showPagination"
+                    :active-num="activeNum"
+                    :on-prev-click="onPrevClick"
+                    :on-next-click="onNextClick"
                     :pages="pages"
-                    :pageTotal="pageTotal"
-                    :onPageClick="onPageClick"
-                    v-if="showPagination"></pagination>
+                    :page-total="pageTotal"
+                    :on-page-click="onPageClick"
+                    :link-to-target="linkToTarget" />
     </div>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * @file 表格文件
  */
-import { defineComponent } from "@vue/composition-api";
-import TableHeader from "./table_header.vue";
-import TableBody from "./table_body.vue";
-import Pagination from "./pagination.vue";
-import { useSort } from "../actions/use_sort";
-import { usePager } from "../actions/use_pagination";
-import { useSortData } from "../actions/table_action";
-import { useCallback } from "../actions/use_callback";
+import { defineComponent, PropType } from '@vue/composition-api';
+import TableHeader from './table_header.vue';
+import TableBody from './table_body.vue';
+import Pagination from './pagination.vue';
+import { usePager } from '../hooks/use_pagination';
+import { useSort, useSortData } from '../hooks/table_action';
+import { TableColumn } from '../types/index';
 
 export default defineComponent({
     name: "Table",
@@ -60,7 +58,7 @@ export default defineComponent({
          * 表格列
          */
         columns: {
-            type: Array,
+            type: Array as PropType<TableColumn[]>,
             required: true,
         },
 
@@ -68,7 +66,7 @@ export default defineComponent({
          * 表格数据
          */
         tableData: {
-            type: Array,
+            type: Array as PropType<Object[]>,
             default: () => [],
         },
 
@@ -98,20 +96,19 @@ export default defineComponent({
     },
 
     setup(props) {
-        const { sort, sortIndex, sortData } = useSort();
+        let { sort, sortIndex, sortData } = useSort();
 
-        const {
+        let {
             activeNum,
             onPrevClick,
             onNextClick,
             pages,
             onPageClick,
             pageTotal,
+            linkToTarget
         } = usePager(props.tableData, props.pageDataLength);
 
-        const { clickRow, hoverRow } = useCallback();
-
-        const { shownData } = useSortData({
+        let { showData } = useSortData({
             showPagination: props.showPagination,
             pageDataLength: props.pageDataLength,
             activeNum,
@@ -121,7 +118,7 @@ export default defineComponent({
         });
 
         return {
-            shownData,
+            showData,
             activeNum,
             onPrevClick,
             onNextClick,
@@ -130,8 +127,8 @@ export default defineComponent({
             pageTotal,
             sortData,
             sort,
-            clickRow,
-            hoverRow,
+            linkToTarget,
+            totalData: props.tableData
         };
     },
 });

@@ -18,19 +18,26 @@
             </li>
         </ul>
 
-        <!-- TODO 指定跳转到某页 -->
         <div class="pagination-total">
             <span class="pagination-active__wrap">{{ `当前处于第 ${activeNum + 1} 页` }}</span>
-            <span>{{ `共 ${pageTotal} 页` }}</span>
+            <span class="pagination-total__wrap">{{ `共 ${pageTotal} 页` }}</span>
+            <span>
+                跳转到
+                <input class="pagination-page__link"
+                       v-model="targetPage"
+                       type="number"
+                       @keyup.enter="linkToTarget(targetPage)" />
+                页
+            </span>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * @file 分页器
  */
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, ref, PropType } from '@vue/composition-api';
 
 export default defineComponent({
     props: {
@@ -47,14 +54,23 @@ export default defineComponent({
         onPageClick: {
             type: Function
         },
+        linkToTarget: {
+            type: Function
+        },
         pageTotal: {
             type: Number,
             default: 0
         },
         pages: {
-            type: Array,
+            type: Array as PropType<number[]>,
             default: () => []
         }
+    },
+
+    setup() {
+        let targetPage = ref('');
+
+        return { targetPage };
     }
 });
 </script>
@@ -99,4 +115,19 @@ export default defineComponent({
 .pagination-active__wrap {
     margin-right: 24px;
 }
+
+.pagination-page__link {
+    display: inline;
+    width: 30px;
+}
+
+/* 去除原生input的加减图标按钮 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
 </style>

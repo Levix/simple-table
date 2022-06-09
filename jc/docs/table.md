@@ -7,8 +7,6 @@
 | needHeader | 是否需要表头 | Boolean | true | |
 | showPagination | 是否显示分页 | Boolean | true | |
 | pageDataLength | 每页展示多少条数据 | Number | 5 | |
-| hoverRow | row hover事件 | Function | - | |
-| clickRow | row click事件| Number | - | |
 
 ### table-header
 
