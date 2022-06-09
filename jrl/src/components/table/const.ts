@@ -1,13 +1,8 @@
-import {  InjectionKey, } from "vue";
-import { 
-    TableToken,
-} from "../types"
-
-export enum STATUS_TOKEN{
-    normal="normal",
-    ascend="ascend",
-    descend="descend"
+export enum STATUS_TOKEN {
+    normal = "normal",
+    ascend = "ascend",
+    descend = "descend"
 }
-export const GLOBAL_TABLE_TOKEN: InjectionKey<TableToken> = Symbol("TABLE_TOKEN");
+export let  UNIQUE_SORT_STATUS = STATUS_TOKEN.normal
 
-export const PAGE_SIZE = 4
+export const GLOBAL_TABLE_TOKEN = Symbol("TABLE_TOKEN");
