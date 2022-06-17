@@ -33,12 +33,12 @@ export default defineComponent({
                   <span
                     class={`table-th-td__sort-btn status--${props.keyClickMap?.[item?.dataKey]}`}
                     onClick={
-                      () => props.handleSort(
-                        props.option.data,
-                        item.dataKey,
-                        props.option.isMultiSort,
-                        props.option.isLocalSort
-                      )
+                      () => props.handleSort({
+                        originData: props.option.data,
+                        key: item.dataKey,
+                        isMultiSort: props.option.isMultiSort,
+                        isLocalSort: props.option.isLocalSort
+                      })
                     }
                   >{'>'}</span>
                 }
