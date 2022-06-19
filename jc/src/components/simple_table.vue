@@ -41,7 +41,7 @@ import TableHeader from './table_header.vue';
 import TableBody from './table_body.vue';
 import Pagination from './pagination.vue';
 import { usePager } from '../hooks/use_pagination';
-import { useSort, useSortData } from '../hooks/table_action';
+import { useSort, useHandleData } from '../hooks/table_action';
 import { TableColumn } from '../types/index';
 
 export default defineComponent({
@@ -89,7 +89,7 @@ export default defineComponent({
         /**
          * 一页展示多少条数据
          */
-        pageDataLength: {
+        pageSize: {
             type: Number,
             default: 5,
         },
@@ -106,11 +106,11 @@ export default defineComponent({
             onPageClick,
             pageTotal,
             linkToTarget
-        } = usePager(props.tableData, props.pageDataLength);
+        } = usePager(props.tableData.length, props.pageSize);
 
-        let { showData } = useSortData({
+        let { showData } = useHandleData({
             showPagination: props.showPagination,
-            pageDataLength: props.pageDataLength,
+            pageSize: props.pageSize,
             activeNum,
             sortDirection: sort,
             sortIndex,
