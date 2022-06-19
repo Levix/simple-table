@@ -2,11 +2,11 @@
 import { computed, ref, watch } from 'vue'
 import { STATUS_TOKEN } from './const'
 import { SortKeyType } from '../types'
-import { useInjector } from './store'
-import { tableDataList } from './store/table_store'
+import { useSourceStoreForSetup, useOriginSourceStoreForSetup } from './store/source_data'
 import { useSortHandle } from './hooks/use_sort'
+import { storeToRefs } from 'pinia'
+import { useSortStoreForSetup } from './store/sort_data'
 
-let { tableData } = useInjector<any>(tableDataList)
 let headProps = defineProps({
 	columnProp: {
 		type: String,
@@ -14,9 +14,13 @@ let headProps = defineProps({
 	}
 })
 
-let { ascendSortHandle, descendSortHandle, normalSortHandle } = useSortHandle(headProps.columnProp)
-
-let changeSortEmit = defineEmits(['change-sort'])
+let { source, getSource } = storeToRefs(useSourceStoreForSetup())
+let { getOriginSource } = storeToRefs(useOriginSourceStoreForSetup())
+let { updateColumnHandle } = useSortStoreForSetup()
+let { ascendSortHandle, descendSortHandle, normalSortHandle } = useSortHandle(
+	source,
+	headProps.columnProp
+)
 
 /** 排序状态 正序 倒序 正常 */
 const status = ref<SortKeyType>(STATUS_TOKEN.normal)
@@ -27,7 +31,6 @@ const statusText = {
 	[STATUS_TOKEN.ascend]: '升序',
 	[STATUS_TOKEN.descend]: '降序'
 }
-
 /** 根据相应状态显示对应文字 */
 const showStatusText = computed(() => {
 	return statusText[status.value]
@@ -36,10 +39,9 @@ const showStatusText = computed(() => {
 const resetSortStatus = () => {
 	status.value = STATUS_TOKEN.normal
 }
-watch(tableData, resetSortStatus)
 
 /**点击排序改变排序状态 */
-const headSortHandle = () => {
+const onHeadSortHandle = () => {
 	switch (status.value) {
 		case STATUS_TOKEN.normal:
 			status.value = STATUS_TOKEN.ascend
@@ -51,24 +53,23 @@ const headSortHandle = () => {
 			break
 		case STATUS_TOKEN.descend:
 			status.value = STATUS_TOKEN.normal
-			normalSortHandle()
+			normalSortHandle(getOriginSource)
 			break
 	}
-	// 点击排序发送排序事件
-	changeSortEmit('change-sort', {
-		status: status.value,
-		columnProp: headProps.columnProp
-	})
+	updateColumnHandle(headProps.columnProp)
 }
 
-defineExpose({
-	columnProp: headProps.columnProp,
-	resetSortStatus
+let { getColumnKey } = storeToRefs(useSortStoreForSetup())
+watch(getSource, () => {
+	if (headProps.columnProp !== getColumnKey.value) {
+		resetSortStatus()
+	}
 })
+watch(getOriginSource, resetSortStatus)
 </script>
 
 <template>
-	<a href="javascript:;" @click="headSortHandle">
+	<a href="javascript:;" @click="onHeadSortHandle">
 		{{ showStatusText }}
 	</a>
 </template>

@@ -4,8 +4,11 @@ import { TableColumn } from '../types'
 import TableHead from './table_head.vue'
 import TableBody from './table_body.vue'
 
-import { useProvider } from './store/index'
-import { tableDataList } from './store/table_store'
+import {
+	useColumnsConfigStoreForSetup,
+	useSourceStoreForSetup,
+	useOriginSourceStoreForSetup
+} from './store/source_data'
 
 /**所有表格数据 */
 let tableProps = defineProps({
@@ -19,13 +22,16 @@ let tableProps = defineProps({
 	}
 })
 const dataList = toRef(tableProps, 'dataList')
-
 const tableColumn = toRef(tableProps, 'tableColumn')
-let { setTableData, setColumnsConfig } = useProvider(tableDataList)
 
-watch(dataList, () => {
-	setTableData(dataList.value)
-	setColumnsConfig(tableColumn.value)
+let { updateSourceHandle } = useSourceStoreForSetup()
+let { updateColumnsConfigHandle } = useColumnsConfigStoreForSetup()
+let { initOriginSourceHandle } = useOriginSourceStoreForSetup()
+
+watch([dataList, tableColumn], () => {
+	initOriginSourceHandle(dataList.value)
+	updateSourceHandle(dataList.value)
+	updateColumnsConfigHandle(tableColumn.value)
 })
 </script>
 
@@ -36,5 +42,3 @@ watch(dataList, () => {
 		<slot name="pageination"></slot>
 	</table>
 </template>
-
-<style></style>

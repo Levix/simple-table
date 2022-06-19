@@ -3,8 +3,6 @@ import { STATUS_TOKEN } from './table/const'
 
 /** 列配置类型 */
 export interface TableColumn {
-	id: number
-
 	key: string
 
 	title: string
