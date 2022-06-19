@@ -1,17 +1,18 @@
 <script lang="ts" setup>
-import { useInjector } from './store'
-import { tableDataList } from './store/table_store'
+import { storeToRefs } from 'pinia'
+import { useColumnsConfigStoreForSetup, useSourceStoreForSetup } from './store/source_data'
 
-let { displayTableList, tableColumnsConfig } = useInjector<any>(tableDataList)
+let { getSource } = storeToRefs(useSourceStoreForSetup())
+let { getColumnData } = storeToRefs(useColumnsConfigStoreForSetup())
 </script>
 
 <template>
 	<tbody>
 		<!-- 渲染所有表格行 -->
-		<tr v-for="(bodyItem, index) in displayTableList.list" :key="index">
+		<tr v-for="(bodyItem, trIndex) in getSource" :key="'tr-index' + trIndex">
 			<!-- 渲染表某一行中所有列 -->
-			<td v-for="colItem in tableColumnsConfig.list" :key="colItem.id">
-				{{ bodyItem[colItem.key] }}
+			<td v-for="(colItem, tdIndex) in getColumnData" :key="'td-index' + tdIndex">
+				{{ bodyItem[colItem.key] || '-' }}
 			</td>
 		</tr>
 	</tbody>

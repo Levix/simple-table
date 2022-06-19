@@ -2,7 +2,7 @@ import { chunk } from 'lodash'
 
 export function getList<T>(curPage: number, limit: number) {
 	let getList = new Promise<T>(function (resolve, reject) {
-		let tableData: any = [
+		let tableData = [
 			{
 				date: '2016-05-03',
 				name: 'fdfsdf',

@@ -1,29 +1,22 @@
 import { cloneDeep, sortBy } from 'lodash'
-
-import { useInjector } from '../store'
-import { tableDataList } from '../store/table_store'
-
-let { displayTableList, setDisplayTableList, tableData } = useInjector<any>(tableDataList, 'root')
+import { Ref } from 'vue'
 
 /**
  * 排序处理方法
  * @param  columnProp 跟据那个属性排序规则
  * @returns
  */
-export function useSortHandle(columnProp: string) {
-	function normalSortHandle() {
-		let sortList = cloneDeep(tableData.list)
-		setDisplayTableList(sortList)
+export function useSortHandle<T extends Ref>(sourceList: T, columnProp: string) {
+	function normalSortHandle<T>(originList: Ref<T>) {
+		sourceList.value = cloneDeep(originList.value)
 	}
 
 	function descendSortHandle() {
-		let sortList = sortBy(displayTableList.list, columnProp).reverse()
-		setDisplayTableList(sortList)
+		sourceList.value = sortBy(sourceList.value, columnProp).reverse()
 	}
 
 	function ascendSortHandle() {
-		let sortList = sortBy(displayTableList.list, columnProp)
-		setDisplayTableList(sortList)
+		sourceList.value = sortBy(sourceList.value, columnProp)
 	}
 
 	return {
