@@ -2,9 +2,6 @@ import { mount } from '@vue/test-utils'
 import { expect, test, it } from 'vitest'
 import JTable from '../src/components/table/index.vue'
 
-import { useSortHandle } from '../src/components/table/hooks/use_sort'
-const { normalSortHandle, descendSortHandle, ascendSortHandle } = useSortHandle('date')
-
 const dataList = [
 	{
 		date: '2016-05-03',
@@ -84,18 +81,15 @@ const dataList = [
 ]
 const columnProp = [
 	{
-		id: 1,
 		key: 'name',
 		title: '名字'
 	},
 	{
-		id: 2,
 		key: 'address',
 		title: '地址',
 		sortable: true
 	},
 	{
-		id: 3,
 		key: 'date',
 		title: '日期',
 		sortable: true

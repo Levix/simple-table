@@ -6,7 +6,6 @@ import { onMounted, reactive, ref, watch } from '@vue/runtime-dom'
 import { getList } from './api/index'
 import JTable from './components/table/index.vue'
 import TablePageination from './components/table/table_pageination.vue'
-
 type TableDataType = {
 	date: string
 	name: string
@@ -16,18 +15,15 @@ let tableData = ref<TableDataType[]>([])
 
 const column = ref([
 	{
-		id: 1,
 		key: 'name',
 		title: '名字'
 	},
 	{
-		id: 2,
 		key: 'address',
 		title: '地址',
 		sortable: true
 	},
 	{
-		id: 3,
 		key: 'date',
 		title: '日期',
 		sortable: true
@@ -52,11 +48,11 @@ watch(tablePage, async () => {
 <template>
 	<j-table :data-list="tableData" :table-column="column">
 		<template #pageination>
-			<table-Pageination
+			<table-pageination
 				v-model:currentPage="tablePage.currentPage"
 				:total="15"
 				:limit-page="tablePage.limit"
-			></table-Pageination>
+			></table-pageination>
 		</template>
 	</j-table>
 </template>
