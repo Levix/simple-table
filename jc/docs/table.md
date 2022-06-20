@@ -6,7 +6,7 @@
 | tableData | 表格数据 | Array | - | |
 | needHeader | 是否需要表头 | Boolean | true | |
 | showPagination | 是否显示分页 | Boolean | true | |
-| pageDataLength | 每页展示多少条数据 | Number | 5 | |
+| pageSize | 每页展示多少条数据 | Number | 5 | |
 
 ### table-header
 

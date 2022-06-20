@@ -26,14 +26,15 @@ export default defineComponent({
          */
         columns: {
             type: Array as PropType<TableColumn[]>,
-            required: true
+            default: () => []
         },
 
         /**
          * 表格数据
          */
         tableData: {
-            type: Array as PropType<Object[]>
+            type: Array as PropType<Object[]>,
+            default: () => []
         }
     }
 })
