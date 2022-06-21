@@ -1,19 +1,18 @@
-import { defineComponent, reactive, renderSlot, watch } from "vue"
+import { computed, defineComponent, reactive, renderSlot, watch } from "vue"
 import { type TableProps, tableProps } from "../types/table"
 import type { SortParamsType } from "../types/app"
 import { cloneDeep } from 'lodash'
 import Toolbar from './Toolbar'
-import Pagination from "./Pagination"
 import useSortable from "../hooks/useSortable"
 import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
+import { Logger } from '../util/logger'
 import '/src/styles/index.css'
 
 export default defineComponent({
   name: 'SimpleTable',
   components: {
     Toolbar,
-    Pagination,
     TableHeader,
     TableBody
   },
@@ -31,11 +30,11 @@ export default defineComponent({
       list.data = sortableData.value
     })
 
+    const curOptionData = computed(() => props.option.data)
+
     // 异步
-    watch(props.option, () => {
-      list.data = cloneDeep(props.option.data)
-    }, {
-      deep: true
+    watch(curOptionData, () => {
+      list.data = cloneDeep(curOptionData.value)
     })
 
     watch(keyClickMap, () => {
@@ -43,6 +42,7 @@ export default defineComponent({
         prev[key] = SORT_PARAMS_MAP[keyClickMap.value[key]]
         return prev;
       }, {} as SortParamsType)
+      Logger.info('当前搜索过滤参数：', sortParams)
       emit('handle-sort', sortParams)
     }, {
       deep: true
@@ -55,7 +55,6 @@ export default defineComponent({
 
       return (
         <div class='table-wrap'>
-
           <toolbar
             onSearch={(val: string) => emit('on-search', val)}
             onRefresh={() => emit('on-refresh')}
@@ -73,12 +72,6 @@ export default defineComponent({
               option={props.option}
               list={list.data} />
           </table>
-
-          <pagination
-            option={props.option.paginationConfig}
-            onUpdateCurPage={(value: number) => {
-              emit('update-cur-page', value)
-            }} />
         </div>
       )
     }

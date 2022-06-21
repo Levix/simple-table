@@ -1,6 +1,7 @@
 // 模拟接口
 
 import { cloneDeep } from "lodash";
+import { Logger } from '../util/logger'
 
 // 数据
 const data = [
@@ -66,7 +67,7 @@ const onSortData = (data: DataType, params?: ParamsType) => {
   let sortMap = params?.sort_params || {}
   let keysOfSortMap = Object.keys(sortMap)
   if (keysOfSortMap.length) {
-    window.console.log('开始远端接口排序，排序字段及顺序为：', sortMap)
+    Logger.info('开始远端接口排序，排序字段及顺序为：', sortMap)
 
     // 此处仅模拟单字段排序，多字段排序场景极少
     let key = keysOfSortMap[0]
@@ -102,7 +103,7 @@ const formatData = (data: DataType, params?: ParamsType) => {
 }
 
 export const getTableApi = (params?: ParamsType) => {
-  window.console.log('后端接口接收到的参数：', params)
+  Logger.info('后端接口接收到的参数：', params)
 
   // 1、根据参数，模拟接口处理data数据
   let curData = formatData(data, params)

@@ -1,6 +1,7 @@
-import { defineComponent, ref, watch } from "vue"
+import { computed, defineComponent, ref, watch } from "vue"
 import { type PaginationProps, paginationProps } from "../types/pagination"
-import usePagination from '../hooks/usePagination';
+import usePagination from '../hooks/usePagination'
+import { Logger } from '../util/logger'
 import '/src/styles/index.css'
 
 export default defineComponent({
@@ -25,7 +26,7 @@ export default defineComponent({
 
       // 手动输入的跳转页码不在范围内，直接不做跳转
       if (num < DEFAULT_MAX_PAGE || num > maxPage.value) {
-        window.console.log(`页码输入不正常，正常范围：[0, ${maxPage.value}]`)
+        Logger.error(`页码输入不正常，正常范围：[0, ${maxPage.value}]`)
         return
       }
       currentPage.value = Math.floor(num)
@@ -44,7 +45,22 @@ export default defineComponent({
     }
 
     watch(currentPage, () => {
+      Logger.info(`emit事件：跳转到第${currentPage.value}页`)
       emit('update-cur-page', Number(currentPage.value))
+    })
+
+    const originCurpage = computed(() => Number(props.option.currentPage))
+
+    watch(originCurpage, () => {
+      let curPage = originCurpage.value
+
+      /**
+       * 1、接口提供的当前页面
+       * 2、模糊搜索时，需要回到第一页
+       */
+      if ('number' === typeof curPage && !isNaN(curPage)) {
+        jumpToPage(curPage)
+      }
     })
 
     return () => (
@@ -56,7 +72,7 @@ export default defineComponent({
         {
           currentPage.value > DEFAULT_MAX_PAGE &&
           <span
-            class='pagination-wrap-btn'
+            class='pagination-wrap-btn pagination-left-btn'
             onClick={() => pageAdd(-1)}
           >
             {'<'}
@@ -83,7 +99,7 @@ export default defineComponent({
         {
           currentPage.value < maxPage.value &&
           <span
-            class='pagination-wrap-btn'
+            class='pagination-wrap-btn pagination-right-btn'
             onClick={() => pageAdd(1)}
           >
             {'>'}
@@ -95,7 +111,6 @@ export default defineComponent({
             type="number"
             class='input'
             value={jumpPage.value}
-            onBlur={e => jumpToPage(Number((e.target as HTMLInputElement).value))}
             onKeydown={e => handleKeydown(e)}
           />
           <span>页</span>

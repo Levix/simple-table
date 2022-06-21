@@ -19,8 +19,16 @@ describe('mount Pagination', () => {
     expect(wrapper.find('.pagination-wrap-total').text()).contains(paginationProps.total)
   })
 
-  it('分页左右按钮点击', () => {
-    wrapper.find('.pagination-wrap-btn').trigger('click')
+  it('分页左按钮点击', async () => {
+    await wrapper.find('.input').setValue(2)
+    wrapper.find('.pagination-left-btn').trigger('click')
+    expect(wrapper.find('.pagination-current-page').text()).contains(1)
+  })
+
+  it('分页右按钮点击', async () => {
+    await wrapper.find('.input').setValue(1)
+    wrapper.find('.pagination-right-btn').trigger('click')
+    expect(wrapper.find('.pagination-current-page').text()).contains(2)
   })
 
   it('分页点击数字3：跳转到第3页', async () => {
@@ -38,9 +46,28 @@ describe('mount Pagination', () => {
     expect(wrapper.find('.pagination-current-page').text()).contains(2)
   })
 
+  it('模拟携带小数点跳转', async () => {
+    await wrapper.find('.input').setValue(2.111)
+    await wrapper.find('.input').trigger('keydown', {
+      keyCode: 13
+    })
+
+    expect(wrapper.find('.pagination-current-page').text()).contains(2)
+  })
+
   it('异常测试：跳转-1页，其实还在当前页面，没有跳转', async () => {
     await wrapper.find('.input').setValue(2)
     await wrapper.find('.input').setValue(-1)
+    await wrapper.find('.input').trigger('keydown', {
+      keyCode: 13
+    })
+
+    expect(wrapper.find('.pagination-current-page').text()).contains(2)
+  })
+
+  it('异常测试：跳转10000页，其实还在当前页面，没有跳转', async () => {
+    await wrapper.find('.input').setValue(2)
+    await wrapper.find('.input').setValue(10000)
     await wrapper.find('.input').trigger('keydown', {
       keyCode: 13
     })
